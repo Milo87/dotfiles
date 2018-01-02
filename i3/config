@@ -17,7 +17,7 @@ set $mod Mod4
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono, Icons 8
+font pango:DejaVu Sans Mono, Icons 6
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -42,7 +42,8 @@ bindsym $mod+Shift+q kill
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -l 5 -p '>'"
 # Use j4-dmenu-desktop instead because it's cool
-bindsym $mod+space exec j4-dmenu-desktop --dmenu="dmenu -i -l 5 -p '>'" --term="i3-sensible-terminal"
+#bindsym $mod+space exec j4-dmenu-desktop --dmenu="dmenu -i -l 5 -p '>' -fn 'DejaVu Sans Mono-6'" --term="i3-sensible-terminal"
+bindsym $mod+space exec rofi -show run
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -140,6 +141,20 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+mode "(s)leep, (h)ibernate, (p)owersave, (r)estart, shutd()own" {
+	
+	bindsym s exec sudo pm-suspend; mode "default"
+	bindsym h exec sudo pm-hibernate; mode "default"
+	bindsym p exec sudo pm-powersave; mode "default"
+	bindsym d exec sudo 'shutdown -P now'; mode "default"
+	bindsym r exec sudo 'shutdown -r now'; mode "default"
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+bindsym $mod+n mode "(s)leep, (h)ibernate, (p)owersave, (r)estart, shutd()own"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -154,7 +169,7 @@ exec --no-startup-id nm-applet
 
 # Screen locking utility
 exec --no-startup-id xautolock -locker "i3lock"
-bindsym $mod+Shift+l exec i3lock
+bindsym $mod+Shift+l exec ~/lock.sh
 
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
@@ -172,7 +187,7 @@ bindsym XF86ScreenSaver exec i3lock -c 000000 -e
 # i3-gaps specific config
 gaps outer 10
 gaps inner 10
-#smart_gaps on
+smart_gaps on
 
 # Use nitrogen to power the wallpaper
 exec --no-startup-id nitrogen --restore
